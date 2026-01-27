@@ -46,7 +46,22 @@ Homework 1 \hfill {\bf Brandon Aikman}
 		\end{cases}
 	$$
 	is $T(n) = n \log n$.
+	Show: $T(n) \leq cn \log n$\\
+	Assume: $T(n/2) \leq cn/2 \log n/2$
+	\begin{eqnarray*}
+		T(n) &=& 2T(n/2) + n\\
+		&\leq & 2(cn/2 \log n/2) + n\\
+		&=& cn \log n/2 + n\\
+		&=& cn \log n - cn \log 2 + n\\
+		&=& cn \log n + (1-c)n\\
+		&\leq & cn \log n \mbox{ for } c \geq 1
+	\end{eqnarray*}
+	Base Case:\\
+	$T(2) = 2$\\
+	$T(4) = 2(2) + 4 = 8 \equiv 4 \log 4 = 8$
 	
+	Thus, we see that for any $n \geq 2$ where $n$ is an exact power of 2, the recurrence is $T(n) = n \log n$.
+	\pagebreak
 	% 3.
 	\item Problem 2-3 (p46)
 	\begin{enumerate}
@@ -62,13 +77,21 @@ Homework 1 \hfill {\bf Brandon Aikman}
 			\tab return p\\
 			}
 			The running time of \texttt{naiveHorner} is $\Theta (n^2)$, and is beat by \texttt{Horner} asymptotically.
-		\item 
+		\item Show that, at termination, $p = \sum_{k=0}^{n} A[k] \cdot x^k$.\\
+		At the start of each iteration of the \texttt{for} loop,
+		$$p = \sum_{k = 0}^{n-(i+1)} A[k + i + 1] \cdot x^k.$$
+		Initialization:\\
+		We start by showing that the loop invariant holds before the first loop iteration, when $i = n$. This yields the summation from $k = 0$ to -1, which is empty. Therefore, $p = 0$ initially, which shows that the loop invariant holds prior to the first iteration of the loop.\\\\
+		Maintenance:\\
+		Next, we see that the \texttt{for} loop works by adding subsequent terms from $A$, multiplied by higher order terms of $x$. When $i = n - 1$, $p = A[n]$. Then, when $i = n - 2$, $p = A[n-1] + A[n]x$. Thus, we see that decrementing $i$ for the next iteration of the \texttt{for} loop then preserves the loop invariant.\\\\
+		Termination:\\
+		The loop variable $i$ starts at $n$ and decreases by 1 in each iteration. Once $i = 0$, the loop terminates. Substituing $i = 0$ in the summation, we clearly see that $p = A[0] + A[1]x + \ldots + A[n-1]x^{n-1} + A[n]x^n$. Hence, the algorithm correctly implements Horner's rule to evaluate $p$.
 	\end{enumerate}
 	
 	% 4.
 	\item Exercise 3.2-2 (p62) \\\\
-	\textbf{The statement }\textit{``The running time of algorithm $A$ is at least $O(n^2)$"}\textbf{ is meaningless, because $O(n^2)$ defines an upper bound on the asymptotic behavior of the algorithm, so it will never have a time complexity greater than $O(n^2)$.}
-	
+	\textbf{The statement }\textit{``The running time of algorithm $A$ is at least $O(n^2)$"}\textbf{ is meaningless, because $O(n^2)$ defines an upper bound on the asymptotic behavior of the algorithm, so it will never have a time complexity greater than $O(n^2)$. Asserting that something will be `at least' the highest possible value it can hold means nothing.}
+	\pagebreak
 	% 5.
 	\item Exercise 3.2-6 (p63) \\
 	Prove that $o(g(n)) \cap \omega (g(n))$ is the empty set.\\\\
@@ -89,16 +112,16 @@ Homework 1 \hfill {\bf Brandon Aikman}
 	\begin{eqnarray*}
 		T(n) &=& T(\lceil n/2 \rceil) + 1\\
 		&\leq & T( \tfrac{n+1}{2}) + 1\\
-		&=& c\log \tfrac{n+1}{2} + 1\\
-		&=& c\log \tfrac{n+1}{2} + \log 2\\
+		&\leq & c\log \tfrac{n+1}{2} + c\\
+		&=& c\log \tfrac{n+1}{2} + c\log 2\\
 		&=& c\log (n+1)\\
 		&=& c\log n + \tfrac{c}{2} \mbox{ for } c \geq 2
 	\end{eqnarray*}
 	Picking $c = \mbox{max}\{ T(2), T(3) \}$ yields $T(2) \leq c < (\log 2 + 1/2)c$ and $T(3) \leq c < (\log 3 + 1/2)c$, establishing the inductive hypothesis for the base cases. \\\\
-	Thus, we have $T(n) \leq c\log n + \tfrac{c}{2}$ for all $n \geq 2$, which implies that the solution to the recurrence is $T(n) = O(\log n)$.
-	
+	\textbf{Thus, we have $T(n) \leq c\log n + \tfrac{c}{2}$ for all $n \geq 2$, which implies that the solution to the recurrence is $T(n) = O(\log n)$.}
+	\pagebreak	
 	% 7.
-	\item Exercise 4.5-1 (a, b, d, e) (p106) \\
+	\item Exercise 4.5-1 (a, b, d, e) (p106
 	\begin{enumerate}
 		\item $T(n) = 2T(n/4) + 1$\\
 		Choosing $\epsilon = 1 > 0$, $f(n) = O(n^{\log _4 2 - 1})$.\\
@@ -119,18 +142,18 @@ Homework 1 \hfill {\bf Brandon Aikman}
 	% 8.
 	\item Exercise 4.5-2 (p106) 
 	
-	\textbf{Given that Strassen's algorithm follows $T(n) = 7T(n/2) + \Theta (n^2)$ and that Caesar's algorithm follows $T(n)= aT(n/4) + \Theta (n^2)$, we must find $\log _4 a$ such that $a < \log _2 7 \cong 2.81$. This is true for $a \leq 48$, so $a = 48$ is the largest integer for which his algorithm could run faster than Strassen's.}
+	\textbf{Given that Strassen's algorithm follows $T(n) = 7T(n/2) + \Theta (n^2)$ and that Caesar's algorithm follows $T(n)= aT(n/4) + \Theta (n^2)$, we must find $a$ such that $n^{log_4 a} < n^{\log _2 7}$. This is true for $a \leq 48$, so $a = 48$ is the largest integer for which his algorithm could run faster than Strassen's.}
 	
 	% 9.
 	\item Exercise 5.2-1 (p133) \\
-	The probability of hiring exactly one time is $\tfrac{1}{n}$ (this occurs on the best-case scenario of a forward-sorted list). The probability of hiring exactly $n$ times is $\tfrac{1}{n!}$ (this occurs on the worst-case scenario of a reverse-sorted list).
+	\textbf{The probability of hiring exactly one time is $\tfrac{1}{n}$ (this occurs on the best-case scenario of a forward-sorted list). The probability of hiring exactly $n$ times is $\tfrac{1}{n!}$ (this occurs on the worst-case scenario of a reverse-sorted list).}
 	
 	% 10.
 	\item Exercise 5.2-2 (p133) \\
-	The probability of hiring exactly twice is $\tfrac{x}{x}$.
+	\textbf{The probability of hiring exactly twice is the Harmonic sum over $n$: $\tfrac{H_{n-1}}{n}$. This evaluates to $\tfrac{\ln n + \gamma}{n}$, which we can rewrite to $\Theta (\tfrac{\log n}{n})$.}
 	
 	% EC.
-	\item (EC) Problem 4-6 (p122) \\
+	%\item (EC) Problem 4-6 (p122) \\
     
 \end{enumerate}
 
